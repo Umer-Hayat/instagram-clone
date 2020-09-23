@@ -12,3 +12,6 @@
   border: 1px solid lightgray;
   object-fit: contain;
 }
+.app__headerImage {
+  width: 90px;
+}
