@@ -35,6 +35,7 @@ function App() {
 
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openSignIn, setOpenSignIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -79,6 +80,17 @@ function App() {
         })
       })
       .catch((error) => alert(error.message));
+
+    setOpen(false);
+  }
+
+  const signIn = (event) => {
+    event.preventDefault();
+
+    auth.signInWithEmailAndPassword(email, password)
+      .catch((error) => alert(error.message))
+
+    setOpenSignIn(false)
   }
 
   return (
@@ -122,6 +134,38 @@ function App() {
         </div>
       </Modal>
 
+      <Modal
+        open={openSignIn}
+        onClose={() => setOpenSignIn(false)}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <form className="app__signup">
+            <center>
+              <img
+                className="app__headerImage"
+                src="/static/images/logo.png"
+                alt="logo"
+              />
+            </center>
+            <Input
+              placeholder="Email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <Input
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <Button onClick={signIn}>Sign In</Button>
+          </form>
+        </div>
+      </Modal>
+
       <div className="app__header">
         <img
           className="app__headerImage"
@@ -132,7 +176,10 @@ function App() {
       {user ? (
         <Button onClick={() => auth.signOut()}>Logout</Button>
       ) : (
-          < Button onClick={() => setOpen(true)}>Sign Up</Button>
+          <div className='app__loginContainer'>
+            <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+            <Button onClick={() => setOpen(true)}>Sign Up</Button>
+          </div>
         )
 
       }
