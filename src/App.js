@@ -41,7 +41,7 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         setUser(authUser);
         if (authUser.displayName) {
@@ -55,6 +55,9 @@ function App() {
         setUser(null);
       }
     })
+    return () => {
+      unsubscribe();
+    }
   }, [user, username])
 
   useEffect(() => {
@@ -70,6 +73,11 @@ function App() {
     event.preventDefault();
 
     auth.createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        return authUser.user.updateProfile({
+          displayName: username
+        })
+      })
       .catch((error) => alert(error.message));
   }
 
@@ -108,6 +116,7 @@ function App() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
             <Button onClick={signUp}>Sign Up</Button>
           </form>
         </div>
@@ -120,7 +129,13 @@ function App() {
           alt="logo"
         />
       </div>
-      <Button onClick={() => setOpen(true)}>Sign Up</Button>
+      {user ? (
+        <Button onClick={() => auth.signOut()}>Logout</Button>
+      ) : (
+          < Button onClick={() => setOpen(true)}>Sign Up</Button>
+        )
+
+      }
       {/* Header */}
 
       {
@@ -134,7 +149,7 @@ function App() {
       <Post username="Umer Hayat" caption="Wow Very nice" imageUrl="/static/images/react.jpg" /> */}
 
 
-    </div>
+    </div >
   );
 }
 
