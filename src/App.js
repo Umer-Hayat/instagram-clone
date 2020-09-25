@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Button, Input } from '@material-ui/core';
 import ImageUpload from './ImageUpload';
+import InstagramEmbed from 'react-instagram-embed';
 
 function getModalStyle() {
   const top = 50;
@@ -96,13 +97,6 @@ function App() {
 
   return (
     <div className="app">
-      {user?.displayName ? (
-
-        < ImageUpload username={user.displayName} />
-      ) : (
-          <h3>Sorry Login</h3>
-        )}
-
       <Modal
         open={open}
         onClose={() => setOpen(false)}
@@ -179,29 +173,48 @@ function App() {
           src="/static/images/logo.png"
           alt="logo"
         />
+        {user ? (
+          <Button onClick={() => auth.signOut()}>Logout</Button>
+        ) : (
+            <div className='app__loginContainer'>
+              <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+              <Button onClick={() => setOpen(true)}>Sign Up</Button>
+            </div>
+          )
+
+        }
       </div>
-      {user ? (
-        <Button onClick={() => auth.signOut()}>Logout</Button>
+
+      <div className="app__posts">
+        <div className='app__postLeft'>
+          {
+            posts.map(({ id, post }) => (
+              <Post key={id} postId={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
+            ))
+          }
+        </div>
+        <div className='app__postRight'>
+          <InstagramEmbed
+            url='https://www.instagram.com/p/B_uf9dmAGPw/'
+            maxWidth={320}
+            hideCaption={false}
+            containerTagName='div'
+            protocol=''
+            injectScript
+            onLoading={() => { }}
+            onSuccess={() => { }}
+            onAfterRender={() => { }}
+            onFailure={() => { }}
+          />
+        </div>
+      </div>
+
+      {user?.displayName ? (
+
+        < ImageUpload username={user.displayName} />
       ) : (
-          <div className='app__loginContainer'>
-            <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
-            <Button onClick={() => setOpen(true)}>Sign Up</Button>
-          </div>
-        )
-
-      }
-      {/* Header */}
-
-      {
-        posts.map(({ id, post }) => (
-          <Post key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl} />
-        ))
-      }
-      {/* 
-      <Post />
-      <Post username="Hayat" caption="Wow React is very easy" imageUrl="/static/images/react.jpg" />
-      <Post username="Umer Hayat" caption="Wow Very nice" imageUrl="/static/images/react.jpg" /> */}
-
+          <h3>Sorry Login</h3>
+        )}
 
     </div >
   );

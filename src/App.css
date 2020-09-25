@@ -11,12 +11,24 @@
   padding: 20px;
   border: 1px solid lightgray;
   object-fit: contain;
+  display: flex;
+  justify-content: space-between;
 }
 .app__headerImage {
+  object-fit: contain;
   width: 90px;
 }
 
 .app__signup {
   display: flex;
   flex-direction: column;
+}
+
+.app__posts {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.app__postRight {
+  margin-left: 20px;
 }
