@@ -193,7 +193,7 @@ function App() {
             ))
           }
         </div>
-        <div className='app__postRight'>
+        {/* <div className='app__postRight'>
           <InstagramEmbed
             url='https://www.instagram.com/p/B_uf9dmAGPw/'
             maxWidth={320}
@@ -206,7 +206,7 @@ function App() {
             onAfterRender={() => { }}
             onFailure={() => { }}
           />
-        </div>
+        </div> */}
       </div>
 
       {user?.displayName ? (
